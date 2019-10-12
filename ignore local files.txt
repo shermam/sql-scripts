@@ -1,0 +1,4 @@
+git update-index --assume-unchanged Services/Troubleshooting/Troubleshooting.Domain/appsettings.json
+
+
+git update-index --no-assume-unchanged <file>
