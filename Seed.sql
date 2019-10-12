@@ -1,3 +1,5 @@
+declare @FORCE_NULLABLES VARCHAR(3) = 'YES';
+
 declare @TABLES_TO_SEED TABLE
 (
 	TABLE_SCHEMA VARCHAR(200),
@@ -11,8 +13,8 @@ INSERT INTO @TABLES_TO_SEED VALUES
 ('Troubleshooting', 'Cause', 20),
 ('Troubleshooting', 'Correction', 30),
 ('Troubleshooting', 'Event', 100),
-('Troubleshooting', 'SolveCause', 50),
-('Troubleshooting', 'SolveCorrection', 50);
+('Troubleshooting', 'SolveCause', 100),
+('Troubleshooting', 'SolveCorrection', 100);
 
 declare @DEFAULT_VALUES TABLE
 (
@@ -29,6 +31,7 @@ INSERT INTO @DEFAULT_VALUES VALUES
 ('Description', '''Teste Description'''),
 --('EventDateTime', '@dateTime'),
 ('EventDateTime', 'GETUTCDATE()'),
+('SolveDateTime','GETUTCDATE()'),
 ('IsLostTime', '0'),
 ('Name', '''Teste Name'''),
 ('Active', '1'),
@@ -144,6 +147,9 @@ begin
 
 			FETCH NEXT FROM columns_cursor   
 			INTO @COLUMN_NAME, @DATA_TYPE, @IS_NULLABLE;
+
+			IF @FORCE_NULLABLES = 'YES'
+				SET @IS_NULLABLE = 'NO';
 
 			SET @VALUE_TEXT = '''0''';
 
